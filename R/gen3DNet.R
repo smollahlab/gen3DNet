@@ -245,7 +245,7 @@ gen3DNet <- function(
         right=read.csv(right, row.names=1)
     }
     if (is.null(out_folder)) {
-        out_folder <- paste("gen3DNet", Sys.time())
+        out_folder <- paste("gen3DNet", Sys.date())
     }
     #Generate 3D model
     result <- create_gen3DNet(
