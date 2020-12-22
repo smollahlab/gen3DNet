@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_nmf_modules.R
 \name{scale_0_1}
 \alias{scale_0_1}
-\title{scale_0_1}
+\title{Scale 0 to 1}
 \usage{
 scale_0_1(x)
 }

@@ -4,17 +4,9 @@
 \alias{gen3DNet}
 \title{Create a 3D network model.}
 \usage{
-gen3DNet(
-  left,
-  right,
-  nmf_nrun = 10,
-  k = NULL,
-  k_picker = nbclust_pick_k,
-  seed = 123456,
-  p_val_threshold = 1e-04,
-  out_folder = NULL,
-  verbose = TRUE
-)
+gen3DNet(left, right, nmf_nrun = 10, k = NULL,
+  k_picker = max_ward_kl, seed = 123456, p_val_threshold = 1e-04,
+  out_folder = NULL, verbose = TRUE)
 }
 \arguments{
 \item{left}{Matrix of left objects}
