@@ -40,7 +40,7 @@ pls.cv<-function (X, y, k = 10, groups = NULL, m = ncol(X), use.kernel = FALSE,
         ytrain = y[-omit]
         Xtest = X[omit, , drop = FALSE]
         ytest = y[omit]
-        pls.object <- plsdof::pls.model(Xtrain * 10000, ytrain, m = m, Xtest = Xtest, 
+        pls.object <- plsdof::pls.model(Xtrain, ytrain, m = m, Xtest = Xtest, 
                                 ytest = ytest, compute.DoF = FALSE, use.kernel = use.kernel,method.cor=method.cor)
         cv.error.matrix[i, ] <- pls.object$mse
         cor.error.matrix[i, ] <- pls.object$cor
@@ -151,7 +151,7 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
     for (i in 1:left_num) {
         set.seed(1234)
         yCent=scale(as.vector(left[,i]), scale = FALSE)
-        mypls1=plsdof::pls.model(XNormZ * 10000,yCent, m=comp, compute.DoF=TRUE)
+        mypls1=plsdof::pls.model(XNormZ,yCent, m=comp, compute.DoF=TRUE)
         mypls3=pls.cv(XNormZ,yCent,compute.covariance=TRUE,m=comp)
         my.vcov=vcov(mypls3)
         my.sd=sqrt(diag(my.vcov)) # standard deviation of the regression coefficients
