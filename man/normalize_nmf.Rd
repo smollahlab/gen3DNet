@@ -6,6 +6,9 @@
 \usage{
 normalize_nmf(left_data)
 }
+\arguments{
+\item{left_data}{The data to be normalized}
+}
 \description{
 This function applies an antilog transformation to the data,
 ensuring that all values are positive, and then scales the

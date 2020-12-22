@@ -4,14 +4,8 @@
 \alias{generate_nmf_modules}
 \title{Generate NMF Modules}
 \usage{
-generate_nmf_modules(
-  left_data,
-  nmf_nrun,
-  k_range,
-  k_picker = nbclust_pick_k,
-  seed,
-  verbose = FALSE
-)
+generate_nmf_modules(left_data, nmf_nrun, k_range,
+  k_picker = max_kl_ward, seed, verbose = FALSE)
 }
 \arguments{
 \item{left_data}{This is the data that will be clustered using NMF. Signatures will be generated for the object type that is represented by rows.}

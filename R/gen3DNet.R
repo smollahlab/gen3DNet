@@ -11,6 +11,26 @@ max_ward_kl <- function(data, k_range) {
           method = "ward.D2", index = "kl")$Best.nc["Number_clusters"]
 }
 
+#' @export
+max_silhouette_consensus <- function(data, k_range) {
+  k_range[which.max(nmf(data, k_range)$measures$silhouette.consensus)]
+}
+
+#' @export
+max_cophenetic <- function(data, k_range) {
+  k_range[which.max(nmf(data, k_range)$measures$cophenetic)]
+}
+
+#' @export
+kneedle_silhouette_consensus <- function(data, k_range) {
+  k_range[kneedle(nmf(data, k_range)$measures$silhouette.consensus, 1)]
+}
+
+#' @export
+kneedle_cophenetic <- function(data, k_range) {
+  k_range[kneedle(nmf(data, k_range)$measures$cophenetic, 1)]
+}
+
 #' Create a general 3D network.
 #' 
 #' This function performs calculations to generate a 3D network.

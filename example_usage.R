@@ -16,7 +16,8 @@ phospho_path <- "phospho_data.csv"
 result <- gen3DNet(
     histon_path,
     phospho_path,
-    nmf_nrun=10
+    nmf_nrun=10,
+    k_picker=max_cophenetic
 )
 #result <- gen3DNet(
 #    histon_path, 
