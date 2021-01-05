@@ -1,7 +1,7 @@
 load("datasets")
 library("NbClust")
-source("../generate_cluster_data.R")
-source("../generate_nmf_modules_functions.R")
+source("generate_cluster_data.R")
+source("generate_nmf_modules_functions.R")
 
 measures <- lapply(
     1:600,
