@@ -3,8 +3,10 @@
 #source("../generate_nmf_modules_functions.R")
 source("../generate_cluster_data.R")
 lib="/home/paul.morrison/bids/iPhDNet/"
-library(NMF,lib=lib)
-library(MASS,lib=lib)
+#library(NMF,lib=lib)
+#library(MASS,lib=lib)
+library(NMF)
+library(MASS)
 k_range <- 2:10 #Low for testing
 n_nmf_run <- 10 #Low for testing
 n_gen_run <- 10 #Low for testing
@@ -197,7 +199,7 @@ tryCatch({
 },
 error=function(cond) {
     print("creating parameters")
-    parameters <- create_parameters(nrows, variances, k_range, ncols, 20)
+    parameters <<- create_parameters(nrows, variances, k_range, ncols, 20)
     #datasets <- create_datasets(parameters)
     save(parameters, file="parameters")
 })
@@ -227,7 +229,7 @@ tryCatch({
 },
 error=function(cond) {
     print("creating datasets")
-    datasets <- create_datasets(parameters)
+    datasets <<- create_datasets(parameters)
     save(datasets, file="datasets")
 })
 
@@ -242,7 +244,7 @@ for (i in 1:length(datasets))  {
     error=function(cond) {
         print("running nmf")
         dataset <- datasets[[i]]
-        nmf_result <- nmf(
+        nmf_result <<- nmf(
             as.matrix(2^dataset),
             k_range,
             #"brunet",
