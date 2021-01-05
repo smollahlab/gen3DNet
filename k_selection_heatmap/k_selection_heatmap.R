@@ -1,7 +1,7 @@
 #How good is pick_k?
 
 #source("../generate_nmf_modules_functions.R")
-source("../generate_cluster_data.R")
+source("generate_cluster_data.R")
 lib="/home/paul.morrison/bids/iPhDNet/"
 #library(NMF,lib=lib)
 #library(MASS,lib=lib)
