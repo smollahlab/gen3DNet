@@ -1,3 +1,50 @@
+
+show <- function(a) {
+    print(a)
+    return(a)
+}
+
+
+
+dist2d <- function(a,b,c) {
+ v1 <- b - c
+ print(v1)
+ v2 <- a - b
+ print(v2)
+ m <- cbind(v1,v2)
+ d <- show(det(m))/show(sqrt(sum(v1*v1))) #take out abs
+ show(d)
+}
+kneedle <- function(cophenetic, sign) {
+    start = c(1, cophenetic[1])
+    end = c(length(cophenetic), cophenetic[length(cophenetic)])
+
+
+    k <- which.max(show(lapply(1:length(cophenetic),
+                     function(idx) {
+                         show(sign * -1 * dist2d(c(idx, cophenetic[idx]),
+                                start,
+                                end
+                         ))
+                     })
+              ))
+    #plot(1:length(cophenetic),cophenetic,type="l")
+    #lines(c(1,length(cophenetic)),
+    #      c(cophenetic[1],cophenetic[length(cophenetic)]),
+    #      col="red")
+    #points(k, cophenetic[k],
+    #       col="blue")
+    print(k)
+    k
+}
+
+remove.na <- function(a) {
+
+    a[!is.na(a)]
+}
+
+
+
 #' Pick k based on the maximum KL index of Ward clusterings
 #' 
 #' This function uses the NbClust package to 
@@ -13,22 +60,22 @@ max_ward_kl <- function(data, k_range) {
 
 #' @export
 max_silhouette_consensus <- function(data, k_range) {
-  k_range[which.max(nmf(data, k_range)$measures$silhouette.consensus)]
+  k_range[which.max(nmf(data, k_range, nrun=10)$measures$silhouette.consensus)]
 }
 
 #' @export
 max_cophenetic <- function(data, k_range) {
-  k_range[which.max(nmf(data, k_range)$measures$cophenetic)]
+  k_range[which.max(nmf(data, k_range, nrun=10)$measures$cophenetic)]
 }
 
 #' @export
 kneedle_silhouette_consensus <- function(data, k_range) {
-  k_range[kneedle(nmf(data, k_range)$measures$silhouette.consensus, 1)]
+  k_range[kneedle(show(remove.na(nmf(data, k_range, nrun=10)$measures$silhouette.consensus)), 1)]
 }
 
 #' @export
 kneedle_cophenetic <- function(data, k_range) {
-  k_range[kneedle(nmf(data, k_range)$measures$cophenetic, 1)]
+  k_range[kneedle(remove.na(nmf(data, k_range, nrun=10)$measures$cophenetic), 1)]
 }
 
 #' Create a general 3D network.
@@ -265,7 +312,7 @@ gen3DNet <- function(
         right=read.csv(right, row.names=1)
     }
     if (is.null(out_folder)) {
-        out_folder <- paste("gen3DNet", Sys.Date())
+        out_folder <- paste("gen3DNet", strptime(Sys.time(),"%Y-%m-%d %H:%M:%S"))
     }
     #Generate 3D model
     result <- create_gen3DNet(
