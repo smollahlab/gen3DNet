@@ -7,7 +7,8 @@
 #write.csv(histon_data, histon_path)
 #write.csv(phospho_data, phospho_path)
 
-install.packages(c("NMF", "plsdof","MASS","NbClust","cli","progress"))
+install.packages(c("BiocManager", "plsdof","MASS","NbClust","cli","progress"), repos="http://cran.us.r-project.org")
+BiocManager::install("NMF")
 install.packages(".",type="source",repos=NULL)
 library("gen3DNet")
 
