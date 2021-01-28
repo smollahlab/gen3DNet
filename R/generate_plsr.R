@@ -152,7 +152,7 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
         set.seed(1234)
         yCent=scale(as.vector(left[,i]), scale = FALSE)
         mypls1=plsdof::pls.model(XNormZ,yCent, m=comp, compute.DoF=TRUE)
-        mypls3=pls.cv(XNormZ,yCent,compute.covariance=TRUE,m=comp)
+        mypls3=pls.cv(XNormZ,yCent,groups=nrow(XNormZ),compute.covariance=TRUE,m=comp)
         my.vcov=vcov(mypls3)
         my.sd=sqrt(diag(my.vcov)) # standard deviation of the regression coefficients
 
