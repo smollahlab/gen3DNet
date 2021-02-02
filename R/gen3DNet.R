@@ -105,12 +105,13 @@ create_gen3DNet <- function(
        else {
            #The user has provided a range of k values.
            #So first, ensure the k values are consecutive.
-           if (!identical(min_k:max_k, k)) {
-               stop("model3d must consider every choice from min_k to max_k")
-           }
+
            #Select min and max
            min_k <- min(k)
            max_k <- max(k)
+           if (!identical(min_k:max_k, k)) {
+               stop("model3d must consider every choice from min_k to max_k")
+           }
        }
     }
 
