@@ -228,15 +228,7 @@ write_all_to_disk <- function(name, object, folder) {
     }
 }
 
-# need to reference iPhDNet to explain
-#     "generalized into model3D"
-# how to formulate problems
-# e.g. metabolites, peptides
-# important to understand in order to relate matrix files to package inputs
-
-# left = output
-# right = input
-# "common"
+MIN_SIZE = 3
 
 #' Create a 3D network model.
 #'
@@ -295,9 +287,12 @@ gen3DNet <- function(
     #Read input files
     if (is.character(left)) {
         left=read.csv(left, row.names=1)
-    }
+    } 
     if (is.character(right)) {
         right=read.csv(right, row.names=1)
+    }
+    if (any(c(dim(left), dim(right)) < MIN_SIZE)) {
+        stop("Please ensure that the dimension of each provided dataframe is at least 3.")
     }
     if (is.null(out_folder)) {
         out_folder <- paste("gen3DNet", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S")))
