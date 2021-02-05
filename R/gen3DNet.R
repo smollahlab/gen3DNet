@@ -292,7 +292,7 @@ gen3DNet <- function(
         right=read.csv(right, row.names=1)
     }
     if (any(c(dim(left), dim(right)) < MIN_SIZE)) {
-        stop("Please ensure that the dimension of each provided dataframe is at least 3.")
+        stop("Please ensure that each provided dataframe has at least 3 rows and columns.")
     }
     if (is.null(out_folder)) {
         out_folder <- paste("gen3DNet", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S")))
