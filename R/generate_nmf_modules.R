@@ -83,7 +83,7 @@ generate_nmf_modules <- function(left_data, nmf_nrun, k_range, k_picker=max_kl_w
         }
     }
 
-    k <- k_picker(mat_hist, k_range)
+    k <- k_picker(left_data, k_range)
 
     if (verbose) {
         cli::cli_alert_info(paste(" Using k =", k))
