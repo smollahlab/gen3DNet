@@ -5,6 +5,8 @@
 # Generate functional modules using NMF
 #-----------------------------------------------------------------------------
 
+utils::globalVariables("max_kl_ward")
+
 #' Scale 0 to 1
 #'
 #' This function scales data from 0 to 1.
@@ -14,25 +16,6 @@ scale_0_1 <- function(x) {
      a <- min(x) 
      b <- max(x) 
      (x - a)/(b - a) 
-}
-
-#' User picks k
-#'
-#' This is a k_picker callback that simply plots the performance
-#' of NMF on every number of clusters in k_range, and asks the
-#' user for input.
-#'
-#' @param nmf_data The data whose number of clusters is in question
-#' @param k_range The numbers of clusters (k values) being considered.
-#' 
-#' @export
-user_pick_k <- function(nmf_data, k_range) {
-    V.random <- NMF::randomize(mat_hist)
-    estim.r.random <- NMF::nmf(V.random, k_range, nrun = nmf_nrun, seed = seed)
-    estim.r <- NMF::nmf(mat_hist, k_range, nrun = nmf_nrun, seed = seed)
-    plot(estim.r, estim.r.random)
-    print("Please pick k")
-    as.numeric(readline())
 }
 
 #' Normalize NMF

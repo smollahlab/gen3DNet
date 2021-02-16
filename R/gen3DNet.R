@@ -1,3 +1,11 @@
+#' @importFrom grDevices dev.off pdf
+#' @importFrom graphics layout lines par plot
+#' @importFrom stats coef dt vcov
+#' @importFrom utils read.csv write.csv
+#' @importFrom NMF nmf
+
+
+
 dist2d <- function(a,b,c) {
  v1 <- b - c
  v2 <- a - b
@@ -35,13 +43,13 @@ remove.na <- function(a) {
 
 #' Pick k based on the maximum KL index of Ward clusterings
 #'
-#' This function uses the NbClust package \citep{charrad2014package} 
+#' This function uses the NbClust package \cite{charrad2014package} 
 #' to estimate the number of clusters present.
 #'
 #' First, the data is repeatedly clustered with 1 cluster, then 
 #' 2, and so on, using the Ward hierarchical clustering algorithm
-#' \citep{Ward1963}. Afterwards, each set of clusters is scored
-#' using the Krzanowski-Lai index \citep{Krzanowski1988}. The
+#' \cite{Ward1963}. Afterwards, each set of clusters is scored
+#' using the Krzanowski-Lai index \cite{Krzanowski1988}. The
 #' number of clusters with the highest index is then chosen. 
 #'
 #' @param data The data with an unknown number of clusters.
@@ -55,8 +63,8 @@ max_ward_kl <- function(data, k_range) {
 
 #' Pick k based on the maximum silhouette score
 #'
-#' This function uses the average silhouette width \citep{Rousseeuw1987}, 
-#' as implemented in the NMF library \citep{Gaujoux2010}. 
+#' This function uses the average silhouette width \cite{Rousseeuw1987}, 
+#' as implemented in the NMF library \cite{Gaujoux2010}. 
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
@@ -68,8 +76,8 @@ max_silhouette_consensus <- function(data, k_range) {
 
 #' Pick k based on the maximum cophenetic score 
 #' 
-#' This function uses the cophenetic correlation \citep{lessig1972comparing},
-#' which is implemented in the NMF library \citep{Gaujoux2010}.
+#' This function uses the cophenetic correlation \cite{lessig1972comparing},
+#' which is implemented in the NMF library \cite{Gaujoux2010}.
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
@@ -81,9 +89,9 @@ max_cophenetic <- function(data, k_range) {
 
 #' Pick k based on the knee point in the silhouette score
 #'
-#' This function uses the knee point \citep{Satopaa2011} of the average silhouette
-#' width \citep{lessig1972comparing}, which is implemented in the NMF library 
-#' \citep{Gaujoux2010}.
+#' This function uses the knee point \cite{Satopaa2011} of the average silhouette
+#' width \cite{lessig1972comparing}, which is implemented in the NMF library 
+#' \cite{Gaujoux2010}.
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
@@ -95,9 +103,9 @@ kneedle_silhouette_consensus <- function(data, k_range) {
 
 #' Pick k based on the knee point in the cophenetic correlation
 #'
-#' This function uses the knee point \citep{Satopaa2011} of the cophenetic 
-#' correlation \citep{lessig1972comparing}, which is implemented in the NMF library 
-#' \citep{Gaujoux2010}.
+#' This function uses the knee point \cite{Satopaa2011} of the cophenetic 
+#' correlation \cite{lessig1972comparing}, which is implemented in the NMF library 
+#' \cite{Gaujoux2010}.
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
@@ -105,6 +113,25 @@ kneedle_silhouette_consensus <- function(data, k_range) {
 #' @export
 kneedle_cophenetic <- function(data, k_range) {
   k_range[kneedle(remove.na(nmf(normalize_nmf(data), k_range, nrun=10)$measures$cophenetic), 1)]
+}
+
+#' User picks k
+#'
+#' This is a k_picker callback that simply plots the performance
+#' of NMF on every number of clusters in k_range, and asks the
+#' user for input.
+#'
+#' @param nmf_data The data whose number of clusters is in question
+#' @param k_range The numbers of clusters (k values) being considered.
+#'
+#' @export
+user_pick_k <- function(nmf_data, k_range) {
+    V.random <- NMF::randomize(nmf_data)
+    estim.r.random <- NMF::nmf(V.random, k_range, nrun = 10, seed = "nndsvd")
+    estim.r <- NMF::nmf(nmf_data, k_range, nrun = 10, seed = "nndsvd")
+    plot(estim.r, estim.r.random)
+    print("Please pick k")
+    as.numeric(readline())
 }
 
 #' Create a general 3D network.
