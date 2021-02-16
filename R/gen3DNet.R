@@ -47,22 +47,22 @@ max_ward_kl <- function(data, k_range) {
 
 #' @export
 max_silhouette_consensus <- function(data, k_range) {
-  k_range[which.max(nmf(data, k_range, nrun=10)$measures$silhouette.consensus)]
+  k_range[which.max(nmf(normalize_nmf(data), k_range, nrun=10)$measures$silhouette.consensus)]
 }
 
 #' @export
 max_cophenetic <- function(data, k_range) {
-  k_range[which.max(nmf(data, k_range, nrun=10)$measures$cophenetic)]
+  k_range[which.max(nmf(normalize_nmf(data), k_range, nrun=10)$measures$cophenetic)]
 }
 
 #' @export
 kneedle_silhouette_consensus <- function(data, k_range) {
-  k_range[kneedle(remove.na(nmf(data, k_range, nrun=10)$measures$silhouette.consensus), 1)]
+  k_range[kneedle(remove.na(nmf(normalize_nmf(data), k_range, nrun=10)$measures$silhouette.consensus), 1)]
 }
 
 #' @export
 kneedle_cophenetic <- function(data, k_range) {
-  k_range[kneedle(remove.na(nmf(data, k_range, nrun=10)$measures$cophenetic), 1)]
+  k_range[kneedle(remove.na(nmf(normalize_nmf(data), k_range, nrun=10)$measures$cophenetic), 1)]
 }
 
 #' Create a general 3D network.
@@ -99,7 +99,7 @@ create_gen3DNet <- function(
        if (length(k) == 0) {
            #The user has provided no min or max k.
            #Choose min and max k automatically.
-           min_k <- 1            #Min k is 1
+           min_k <- 2            #Min k is 2  
            max_k <- min(dim(left) - 1) #Max k is num. cols or 30
        }
        else {
