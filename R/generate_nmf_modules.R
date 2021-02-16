@@ -52,6 +52,7 @@ normalize_nmf <- function(left_data) {
 #' @param k_range Either a) A consecutive range of possible k values, b) a single k value, or c) nothing, meaning that generate_nmf_modules will assume the range is from 2 to the number of rows.
 #' @param k_picker Any function that takes a dataframe and a consecutive range of potential k values
 #' @param seed The seed to use with NMF
+#' @param verbose Whether to print output (default TRUE).
 generate_nmf_modules <- function(left_data, nmf_nrun, k_range, k_picker=max_kl_ward, seed, verbose=FALSE) {
 
     cli::cli_alert_success("Running NMF")
