@@ -92,7 +92,14 @@ generate_nmf_modules <- function(left_data, nmf_nrun, k_range, k_picker=max_kl_w
     #with nndsvd seed
     res_hist <- NMF::nmf(mat_hist, k, "brunet", nrun=nmf_nrun, seed = "nndsvd")
 
+    #Add NMF plot of basis and loading heatmaps
+    pdf(file="basis_loading_heatmap")
+
     layout(cbind(1, 2))
+    basismap(res_hist, labRow= row.names(left_data))
+    coefmap(res_hist)
+
+    dev.off()
 
     res_hist
 }
