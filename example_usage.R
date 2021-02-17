@@ -11,5 +11,10 @@ result <- gen3DNet(
     phospho_path,
     nmf_nrun=10,
     p_val_threshold=0.01, 
+    #k_picker=max_cophenetic
+    #k_picker=kneedle_silhouette_consensus
+    #k_picker=kneedle_cophenetic 
+    #k_picker=max_silhouette_consensus
+    #k_picker=max_cophenetic
     k_picker=max_ward_kl
 )
