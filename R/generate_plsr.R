@@ -7,9 +7,14 @@
 #-----------------------------------------------------------------------------
 
 # A modified version of pls.cv
-pls.cv<-function (X, y, k = 10, groups = NULL, m = ncol(X), use.kernel = FALSE, 
+pls.cv<-function (X, y, k = 10, groups=NULL, m = ncol(X), use.kernel = FALSE, 
                   compute.covariance = FALSE,method.cor="pearson") 
 {
+    cross <- nrow(X) 
+    if (cross < 10 & cross > 2)
+    {
+        k = cross
+    }
     n <- nrow(X)
     p <- ncol(X)
     if (is.null(groups) == FALSE) {
@@ -144,6 +149,7 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
     all_directions = c()
     all_significant = c()
 
+
     pb <- progress::progress_bar$new(
       format = "   Regressing... [:bar] :percent eta: :eta",
       total = left_num * right_num, clear = FALSE, width= 60)
@@ -152,11 +158,11 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
         set.seed(1234)
         yCent=scale(as.vector(left[,i]), scale = FALSE)
         mypls1=plsdof::pls.model(XNormZ,yCent, m=comp, compute.DoF=TRUE)
-        mypls3_k <- 10
-        if (nrow(XNormZ) < mypls3_k) {
-            mypls3_k <- nrow(XNormZ)
-        }
-        mypls3=pls.cv(XNormZ,yCent,compute.covariance=TRUE,m=comp,k=mypls3_k)
+        #mypls3_k <- 10
+        #if (nrow(XNormZ) < mypls3_k) {
+        #    mypls3_k <- nrow(XNormZ)
+        #}
+        mypls3=pls.cv(XNormZ,yCent,compute.covariance=TRUE,m=comp)
         my.vcov=vcov(mypls3)
         my.sd=sqrt(diag(my.vcov)) # standard deviation of the regression coefficients
 
@@ -164,27 +170,29 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
         myvec = mypls3$coefficients
         mat=XNormZ%*%myvec
 
-        plot(yCent,mat,xlab="measured",ylab="predicted(mycalc)", ylim=c(-2,2), xlim=c(-2,2),main=names(left)[i])
+        #plot(yCent,mat,xlab="measured",ylab="predicted(mycalc)", ylim=c(-2,2), xlim=c(-2,2),main=names(left)[i])
+        plot(yCent,mat,xlab="measured",ylab="predicted(mycalc)", xlim=c(min(yCent),max(yCent)), ylim=c(min(mat),max(mat)),main=names(left)[i])
         ## add naive estimate
         lines(-2:2,-2:2,lwd=3)
-        plot(yCent,mypls1$Yhat[,index],xlab="measured",ylab="predicted(Yhat)", ylim=c(-2,2), xlim=c(-2,2),main=names(left)[i])
         # add naive estimate
+        #plot(yCent,mypls1$Yhat[,index],xlab="measured",ylab="predicted(Yhat)", ylim=c(-2,2), xlim=c(-2,2),main=names(left)[i])
+        plot(yCent,mypls1$Yhat[,index],xlab="measured",ylab="predicted(Yhat)", ylim=c(-2,2), xlim=c(-2,2),main=names(left)[i])
         lines(-2:2,-2:2,lwd=3)
 
         for (k in 1:right_num) {
             pval=dt(mypls3$coefficients[k]/my.sd[k], (mypls3$m.opt))
 
-            if (is.na(pval)) {
-                significant <- FALSE
+            #if (is.na(pval)) {
+            #    significant <- FALSE
+            #}
+            #else {
+            if (pval < p_val_threshold) {
+                significant = TRUE
             }
             else {
-                if (pval < p_val_threshold) {
-                    significant = TRUE
-                }
-                else {
-                    significant = FALSE
-                }
+                significant = FALSE
             }
+            #}
             if (mypls3$coefficients[k] < 0){
                 direction = "neg"
             } 
