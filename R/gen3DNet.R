@@ -337,7 +337,10 @@ gen3DNet <- function(
         stop("Please ensure that each provided dataframe has at least 3 rows and columns.")
     }
     if (is.null(out_folder)) {
-        out_folder <- paste("gen3DNet", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S")))
+        out_folder <- paste(
+            "gen3DNet", chartr(old=" ", new="_", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S"))),
+            sep="_"
+        )
     }
     #Generate 3D model
     result <- create_gen3DNet(
