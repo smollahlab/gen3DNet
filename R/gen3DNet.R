@@ -270,7 +270,7 @@ write_all_to_disk <- function(name, object, folder) {
     }
 }
 
-MIN_SIZE = 3
+MIN_SIZE = 5 
 
 #' Create a 3D network model.
 #'
