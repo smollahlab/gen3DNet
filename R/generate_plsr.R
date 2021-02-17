@@ -152,12 +152,11 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
         set.seed(1234)
         yCent=scale(as.vector(left[,i]), scale = FALSE)
         mypls1=plsdof::pls.model(XNormZ,yCent, m=comp, compute.DoF=TRUE)
-
-        pls_cv_k = 10
-        if (nrow(XNormZ) < pls_cv_k) {
-            pls_cv_k <- nrow(XNormZ) 
-        } 
-        mypls3=plsdof::pls.cv(XNormZ,yCent,compute.covariance=TRUE,m=comp,k=pls_cv_k)
+        mypls3_k <- 10
+        if (nrow(XNormZ) < mypls3_k) {
+            mypls3_k <- nrow(XNormZ)
+        }
+        mypls3=pls.cv(XNormZ,yCent,compute.covariance=TRUE,m=comp,k=mypls3_k)
         my.vcov=vcov(mypls3)
         my.sd=sqrt(diag(my.vcov)) # standard deviation of the regression coefficients
 
@@ -175,11 +174,16 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
         for (k in 1:right_num) {
             pval=dt(mypls3$coefficients[k]/my.sd[k], (mypls3$m.opt))
 
-            if (!is.null(pval)) {
-                significant = pval < p_val_threshold
+            if (is.na(pval)) {
+                significant <- FALSE
             }
             else {
-                significant = FALSE
+                if (pval < p_val_threshold) {
+                    significant = TRUE
+                }
+                else {
+                    significant = FALSE
+                }
             }
             if (mypls3$coefficients[k] < 0){
                 direction = "neg"
