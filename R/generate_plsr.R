@@ -11,7 +11,7 @@ pls.cv<-function (X, y, k = 10, groups=NULL, m = ncol(X), use.kernel = FALSE,
                   compute.covariance = FALSE,method.cor="pearson") 
 {
     cross <- nrow(X) 
-    if (cross < 10 & cross > 2)
+    if (cross < 10 & cross > 4)
     {
         k = cross
     }
