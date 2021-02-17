@@ -152,7 +152,7 @@ create_gen3DNet <- function(
            min_k <- min(k)
            max_k <- max(k)
            if (!identical(min_k:max_k, k)) {
-               stop("model3d must consider every choice from min_k to max_k")
+               stop("gen3DNet must consider every choice from min_k to max_k")
            }
        }
     }
