@@ -193,7 +193,7 @@ create_gen3DNet <- function(
            min_k <- min(k)
            max_k <- max(k)
            if (!identical(min_k:max_k, k)) {
-               stop("model3d must consider every choice from min_k to max_k")
+               stop("gen3DNet must consider every choice from min_k to max_k")
            }
        }
     }
@@ -311,7 +311,7 @@ write_all_to_disk <- function(name, object, folder) {
     }
 }
 
-MIN_SIZE = 3
+MIN_SIZE = 5 
 
 #' Create a 3D network model.
 #'
@@ -378,7 +378,10 @@ gen3DNet <- function(
         stop("Please ensure that each provided dataframe has at least 3 rows and columns.")
     }
     if (is.null(out_folder)) {
-        out_folder <- paste("gen3DNet", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S")))
+        out_folder <- paste(
+            "gen3DNet", chartr(old=" ", new="_", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S"))),
+            sep="_"
+        )
     }
     #Generate 3D model
     result <- create_gen3DNet(
