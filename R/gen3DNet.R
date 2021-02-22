@@ -1,3 +1,9 @@
+#' @importFrom grDevices dev.off pdf
+#' @importFrom graphics layout lines par plot
+#' @importFrom stats coef dt vcov
+#' @importFrom utils read.csv write.csv
+#' @importFrom NMF nmf basismap coefmap
+
 dist2d <- function(a,b,c) {
  v1 <- b - c
  v2 <- a - b
