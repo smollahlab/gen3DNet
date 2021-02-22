@@ -112,6 +112,19 @@ kneedle_cophenetic <- function(data, k_range) {
 #' This function performs calculations to generate a 3D network.
 #' It is not meant to be called directly. You should use gen3DNet
 #' instead. See help(gen3DNet) for further documentation.
+#' @param left Matrix of left objects
+#' @param right Matrix of right objects
+#' @param nmf_nrun Number of iterations to use for NMF
+#' @param k Number of clusters to use for NMF. This can be specified as a
+#'   - single number, or
+#'   - consecutive range.
+#' If unspecified, k is picked from 1 to min(num_cols - 1, num_rows - 1)
+#' @param k_picker Method for picking k. If unspecified, k values are compared
+#' using the KL-index of Ward clusterings based on euclidean distance.
+#' @param seed Seed to use for NMF.
+#' @param p_val_threshold Threshold for significant p-values in PLSR.
+#' @param out_folder Folder used for outputting results.
+#' @param verbose Whether to print output (default TRUE).
 create_gen3DNet <- function(
     left,
     right,
