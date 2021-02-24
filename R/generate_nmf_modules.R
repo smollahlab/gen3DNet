@@ -28,9 +28,9 @@ scale_0_1 <- function(x) {
 #' 
 #' @export
 user_pick_k <- function(nmf_data, k_range) {
-    V.random <- NMF::randomize(mat_hist)
-    estim.r.random <- NMF::nmf(V.random, k_range, nrun = nmf_nrun, seed = seed)
-    estim.r <- NMF::nmf(mat_hist, k_range, nrun = nmf_nrun, seed = seed)
+    V.random <- NMF::randomize(nmf_data)
+    estim.r.random <- NMF::nmf(V.random, k_range, nrun = 10, seed = "nndsvd")
+    estim.r <- NMF::nmf(nmf_data, k_range, nrun = 10, seed = "nndsvd")
     plot(estim.r, estim.r.random)
     print("Please pick k")
     as.numeric(readline())
