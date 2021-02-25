@@ -209,7 +209,7 @@ create_gen3DNet <- function(
         cli::cli_alert_success("Merging data...")
     }
 
-    loading_original <- coef(nmf_result)
+    loading_original <- as.matrix(coef(nmf_result))
     loading <- t(loading_original)
 
     left_names <- colnames(left)
