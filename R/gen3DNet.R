@@ -140,8 +140,11 @@ kneedle_cophenetic <- function(data, k_range) {
 #' Create a general 3D network.
 #' 
 #' This function performs calculations to generate a 3D network.
-#' It is not meant to be called directly. You should use gen3DNet
-#' instead. See help(gen3DNet) for further documentation.
+#' It is not meant to be called directly. You should use the gen3DNet
+#' function, which sanitizes arguments and reads in data from file paths.
+#' See help(gen3DNet) for further documentation.
+#' 
+#' 
 #' @param left Matrix of left objects
 #' @param right Matrix of right objects
 #' @param nmf_nrun Number of iterations to use for NMF
@@ -323,7 +326,7 @@ create_gen3DNet <- function(
 #' @param folder The parent folder where the top-level folder should be placed.
 #' 
 #' @examples
-#' For example, if the object is 
+#' # For example, if the object is
 #' object = list(
 #'     item1 = list(
 #'         df1 = data.frame(a=c(1,2),b=c(3,4)),
@@ -334,16 +337,17 @@ create_gen3DNet <- function(
 #'     ),
 #'     df4 = data.frame(a=c(1,2),b=c(3,4))
 #' )
-#' and the call is
+#' # and the call is
 #' write_all_to_disk("toplevelfolder", object, ".")
-#' The following files and folders would be written:
-#' toplevelfolder/
-#'     item1/
-#'         df1.csv
-#'         df2.csv
-#'     item2/
-#'         df3.csv
-#'     df4.csv
+#' # The following files and folders would be written:
+#' # toplevelfolder/
+#' #     item1/
+#' #         df1.csv
+#' #         df2.csv
+#' #     item2/
+#' #         df3.csv
+#' #     df4.csv
+#' #
 #'
 #' @export
 write_all_to_disk <- function(name, object, folder) {
@@ -375,11 +379,34 @@ write_all_to_disk <- function(name, object, folder) {
 
 MIN_SIZE = 5 
 
-#' Create a general 3D network.
+#' Create a 3D network model.
+#'
+#' This function creates a 3D network model relating two matrices.
+#' The columns of each matrix should represent two sets of objects,
+#' with the rows of both matrices corresponding to observations under
+#' the same circumstances. For example, the columns might be 
+#' phosphoproteins and histones, and the rows might correspond to drugs.
+#' In this case, the data values would represent the transcription
+#' or GCP activation level in cells treated with different drugs.
 #' 
-#' This function performs calculations to generate a 3D network.
-#' It is not meant to be called directly. You should use gen3DNet
-#' instead. See help(gen3DNet) for further documentation.
+#' The final 3D network model consists of connections between the rows
+#' and both sets of columns, as follows:
+#'
+#'   - Connections between the rows and the left columns. These are found using 
+#'     NMF (nonnegative matrix factorization). The data can contain negative
+#'     values, as an antilog transformation is used internally. The number of
+#'     NMF clusters can be specified, but otherwise it will be chosen
+#'     automatically based on the value that gives the highest KL-index
+#'     when using Ward hierarchical clustering.
+#'     The connection weight between a given left column and row is the 
+#'     maximum basis value for the left column object.
+#'     See the function generate_nmf_modules for further information.
+#' 
+#'   - Connections between the rows of the right and left columns.
+#'     These are found using PLSR. The connection strength is the absolute
+#'     value of the PLSR regression coefficient. See the function
+#'     generate_plsr for more information.
+#' 
 #' @param left Matrix of left objects
 #' @param right Matrix of right objects
 #' @param nmf_nrun Number of iterations to use for NMF
@@ -396,6 +423,7 @@ MIN_SIZE = 5
 #'   - max_silhouette_consensus
 #'   - max_cophenetic
 #'   - max_ward_kl
+#' 
 #' To learn more, use help() for each of these functions.
 #'
 #' @param seed Seed to use for NMF.
