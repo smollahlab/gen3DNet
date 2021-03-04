@@ -1,27 +1,47 @@
+#' @importFrom grDevices dev.off pdf
+#' @importFrom graphics layout lines par plot
+#' @importFrom stats dt vcov
+#' @importFrom utils read.csv write.csv
+#' @importFrom NMF coef nmf basismap coefmap
+
 dist2d <- function(a,b,c) {
  v1 <- b - c
  v2 <- a - b
  m <- cbind(v1,v2)
- d <- det(m)/sqrt(sum(v1*v1)) #take out abs
+ d <- det(m)/sqrt(sum(v1*v1))
  d
 }
 
-kneedle <- function(cophenetic, sign) {
-    start = c(1, cophenetic[1])
-    end = c(length(cophenetic), cophenetic[length(cophenetic)])
-    k <- which.max(lapply(1:length(cophenetic),
+
+#' Find the knee/elbow point in a vector using the Kneedle algorithm.
+#'
+#' This function uses the Kneedle algorithm (Satopaa 2011)
+#' to find the index of the knee point in the provided vector.
+#' If the values are mostly increasing, use sign = 1. If they are
+#' mostly decreasing, use sign = -1.
+#'
+#' @param values The values to find a knee/elbow in.
+#' @param sign -1 if the values are mostly decreasing, 1 if the 
+#' values are mostly decreasing.
+#'
+#' @return The index of the knee/elbow.
+#'
+kneedle <- function(values, sign) {
+    start = c(1, values[1])
+    end = c(length(values), values[length(values)])
+    k <- which.max(lapply(1:length(values),
                      function(idx) {
-                         sign * -1 * dist2d(c(idx, cophenetic[idx]),
+                         sign * -1 * dist2d(c(idx, values[idx]),
                                 start,
                                 end
                          )
                      })
               )
-    #plot(1:length(cophenetic),cophenetic,type="l")
-    #lines(c(1,length(cophenetic)),
-    #      c(cophenetic[1],cophenetic[length(cophenetic)]),
+    #plot(1:length(values),values,type="l")
+    #lines(c(1,length(values)),
+    #      c(values[1],values[length(values)]),
     #      col="red")
-    #points(k, cophenetic[k],
+    #points(k, values[k],
     #       col="blue")
     k
 }
@@ -35,18 +55,20 @@ remove.na <- function(a) {
 
 #' Pick k based on the maximum KL index of Ward clusterings
 #'
-#' This function uses the NbClust package \citep{charrad2014package} 
+#' This function uses the NbClust package (Charrad 2014)
 #' to estimate the number of clusters present.
 #'
 #' First, the data is repeatedly clustered with 1 cluster, then 
 #' 2, and so on, using the Ward hierarchical clustering algorithm
-#' \citep{Ward1963}. Afterwards, each set of clusters is scored
-#' using the Krzanowski-Lai index \citep{Krzanowski1988}. The
+#' (Ward 1963). Afterwards, each set of clusters is scored
+#' using the Krzanowski-Lai index (Krzanowski 1988). The
 #' number of clusters with the highest index is then chosen. 
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
 #'
+#' @return The chosen value of k.
+#' 
 #' @export
 max_ward_kl <- function(data, k_range) {
   NbClust::NbClust(t(data), diss=NULL, distance = "euclidean", min.nc=min(k_range), max.nc=max(k_range),
@@ -55,12 +77,14 @@ max_ward_kl <- function(data, k_range) {
 
 #' Pick k based on the maximum silhouette score
 #'
-#' This function uses the average silhouette width \citep{Rousseeuw1987}, 
-#' as implemented in the NMF library \citep{Gaujoux2010}. 
+#' This function uses the average silhouette width (Rousseeuw 1987), 
+#' as implemented in the NMF library (Gaujoux 2010). 
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
 #'
+#' @return The chosen value of k.
+#' 
 #' @export
 max_silhouette_consensus <- function(data, k_range) {
   k_range[which.max(nmf(normalize_nmf(data), k_range, nrun=10)$measures$silhouette.consensus)]
@@ -68,12 +92,14 @@ max_silhouette_consensus <- function(data, k_range) {
 
 #' Pick k based on the maximum cophenetic score 
 #' 
-#' This function uses the cophenetic correlation \citep{lessig1972comparing},
-#' which is implemented in the NMF library \citep{Gaujoux2010}.
+#' This function uses the cophenetic correlation (Lessig 1972),
+#' which is implemented in the NMF library (Gaujoux 2010).
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
 #'
+#' @return The chosen value of k.
+#' 
 #' @export
 max_cophenetic <- function(data, k_range) {
   k_range[which.max(nmf(normalize_nmf(data), k_range, nrun=10)$measures$cophenetic)]
@@ -81,13 +107,15 @@ max_cophenetic <- function(data, k_range) {
 
 #' Pick k based on the knee point in the silhouette score
 #'
-#' This function uses the knee point \citep{Satopaa2011} of the average silhouette
-#' width \citep{lessig1972comparing}, which is implemented in the NMF library 
-#' \citep{Gaujoux2010}.
+#' This function uses the knee point (Satopaa 2011) of the average silhouette
+#' width (Lessig 1972), which is implemented in the NMF library 
+#' (Gaujoux 2010).
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
 #'
+#' @return The chosen value of k.
+#' 
 #' @export
 kneedle_silhouette_consensus <- function(data, k_range) {
   k_range[kneedle(remove.na(nmf(normalize_nmf(data), k_range, nrun=10)$measures$silhouette.consensus), 1)]
@@ -95,13 +123,15 @@ kneedle_silhouette_consensus <- function(data, k_range) {
 
 #' Pick k based on the knee point in the cophenetic correlation
 #'
-#' This function uses the knee point \citep{Satopaa2011} of the cophenetic 
-#' correlation \citep{lessig1972comparing}, which is implemented in the NMF library 
-#' \citep{Gaujoux2010}.
+#' This function uses the knee point (Satopaa 2011) of the cophenetic 
+#' correlation (Lessig 1972), which is implemented in the NMF library 
+#' (Gaujoux 2010).
 #'
 #' @param data The data with an unknown number of clusters.
 #' @param k_range The range of possible k values
 #'
+#' @return The chosen value of k.
+#' 
 #' @export
 kneedle_cophenetic <- function(data, k_range) {
   k_range[kneedle(remove.na(nmf(normalize_nmf(data), k_range, nrun=10)$measures$cophenetic), 1)]
@@ -110,8 +140,54 @@ kneedle_cophenetic <- function(data, k_range) {
 #' Create a general 3D network.
 #' 
 #' This function performs calculations to generate a 3D network.
-#' It is not meant to be called directly. You should use gen3DNet
-#' instead. See help(gen3DNet) for further documentation.
+#' It is not meant to be called directly. You should use the gen3DNet
+#' function, which sanitizes arguments and reads in data from file paths.
+#' See help(gen3DNet) for further documentation.
+#' 
+#' 
+#' @param left Matrix of left objects
+#' @param right Matrix of right objects
+#' @param nmf_nrun Number of iterations to use for NMF
+#' @param k Number of clusters to use for NMF. This can be specified as a
+#'   - single number, or
+#'   - consecutive range.
+#' If unspecified, k is picked from 1 to min(num_cols - 1, num_rows - 1)
+#' @param k_picker Method for picking k. If unspecified, k values are compared
+#' using the KL-index of Ward clusterings based on euclidean distance.
+#' Possible values:
+#'   - max_cophenetic
+#'   - kneedle_silhouette_consensus
+#'   - kneedle_cophenetic 
+#'   - max_silhouette_consensus
+#'   - max_cophenetic
+#'   - max_ward_kl
+#' To learn more, use help() for each of these functions.
+#'
+#' @param seed Seed to use for NMF.
+#' @param p_val_threshold Threshold for significant p-values in PLSR.
+#' @param out_folder Folder used for outputting results.
+#' @param verbose Whether to print output (default TRUE).
+#' 
+#' @examples
+#' 
+#' library("gen3DNet")
+#' histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
+#' phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
+#' result <- gen3DNet(
+#'    histon_path,
+#'    phospho_path,
+#'    nmf_nrun = 10,
+#'    p_val_threshold = 0.01, 
+#     # Use one of the following k_selection functions 
+#'    # k_picker = max_cophenetic
+#'    # k_picker = kneedle_silhouette_consensus
+#'    # k_picker = kneedle_cophenetic 
+#'    # k_picker = max_silhouette_consensus
+#'    # k_picker = max_cophenetic
+#'    # k_picker = max_ward_kl
+#'    k_picker = max_ward_kl
+#' )
+#'
 create_gen3DNet <- function(
     left,
     right,
@@ -190,7 +266,7 @@ create_gen3DNet <- function(
         cli::cli_alert_success("Merging data...")
     }
 
-    loading_original <- coef(nmf_result)
+    loading_original <- as.matrix(coef(nmf_result))
     loading <- t(loading_original)
 
     left_names <- colnames(left)
@@ -243,6 +319,37 @@ create_gen3DNet <- function(
     )
 }
 
+#' Write a nested list as nested folders, with data.frame objects as csvs.
+#'
+#' @param name The name of the top-level folder to be written
+#' @param object The nested list
+#' @param folder The parent folder where the top-level folder should be placed.
+#' 
+#' @examples
+#' # For example, if the object is
+#' object = list(
+#'     item1 = list(
+#'         df1 = data.frame(a=c(1,2),b=c(3,4)),
+#'         df2 = data.frame(a=c(1,2),b=c(3,4))
+#'     ),
+#'     item2 = list(
+#'         df3=data.frame(a=c(1,2),b=c(3,4))
+#'     ),
+#'     df4 = data.frame(a=c(1,2),b=c(3,4))
+#' )
+#' # and the call is
+#' write_all_to_disk("toplevelfolder", object, ".")
+#' # The following files and folders would be written:
+#' # toplevelfolder/
+#' #     item1/
+#' #         df1.csv
+#' #         df2.csv
+#' #     item2/
+#' #         df3.csv
+#' #     df4.csv
+#' #
+#'
+#' @export
 write_all_to_disk <- function(name, object, folder) {
     if (class(object) == "data.frame") {
         final_path = file.path(folder, paste(name,".csv",sep=""))
@@ -299,21 +406,51 @@ MIN_SIZE = 5
 #'     These are found using PLSR. The connection strength is the absolute
 #'     value of the PLSR regression coefficient. See the function
 #'     generate_plsr for more information.
-#'
+#' 
 #' @param left Matrix of left objects
 #' @param right Matrix of right objects
 #' @param nmf_nrun Number of iterations to use for NMF
-#' @param k Number of clusters to use for NMF. This can be specified as a 
+#' @param k Number of clusters to use for NMF. This can be specified as a
 #'   - single number, or
 #'   - consecutive range.
 #' If unspecified, k is picked from 1 to min(num_cols - 1, num_rows - 1)
 #' @param k_picker Method for picking k. If unspecified, k values are compared
 #' using the KL-index of Ward clusterings based on euclidean distance.
+#' Possible values:
+#'   - max_cophenetic
+#'   - kneedle_silhouette_consensus
+#'   - kneedle_cophenetic 
+#'   - max_silhouette_consensus
+#'   - max_cophenetic
+#'   - max_ward_kl
+#' 
+#' To learn more, use help() for each of these functions.
+#'
 #' @param seed Seed to use for NMF.
-#' @param p_val_threshold Threshold for significant p-values in PLSR. 
+#' @param p_val_threshold Threshold for significant p-values in PLSR.
 #' @param out_folder Folder used for outputting results.
 #' @param verbose Whether to print output (default TRUE).
 #' 
+#' @examples
+#' 
+#' library("gen3DNet")
+#' histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
+#' phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
+#' result <- gen3DNet(
+#'    histon_path,
+#'    phospho_path,
+#'    nmf_nrun = 10,
+#'    p_val_threshold = 0.01, 
+#     # Use one of the following k_selection functions 
+#'    # k_picker = max_cophenetic
+#'    # k_picker = kneedle_silhouette_consensus
+#'    # k_picker = kneedle_cophenetic 
+#'    # k_picker = max_silhouette_consensus
+#'    # k_picker = max_cophenetic
+#'    # k_picker = max_ward_kl
+#'    k_picker = max_ward_kl
+#' )
+#'
 #' @export
 gen3DNet <- function(
     left,

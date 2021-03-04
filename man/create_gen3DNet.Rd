@@ -4,12 +4,76 @@
 \alias{create_gen3DNet}
 \title{Create a general 3D network.}
 \usage{
-create_gen3DNet(left, right, nmf_nrun = 10, k = c(),
-  k_picker = max_ward_kl, seed = 123456, p_val_threshold = 1e-04,
-  out_folder = "gen3DNet", verbose = TRUE)
+create_gen3DNet(
+  left,
+  right,
+  nmf_nrun = 10,
+  k = c(),
+  k_picker = max_ward_kl,
+  seed = 123456,
+  p_val_threshold = 1e-04,
+  out_folder = "gen3DNet",
+  verbose = TRUE
+)
+}
+\arguments{
+\item{left}{Matrix of left objects}
+
+\item{right}{Matrix of right objects}
+
+\item{nmf_nrun}{Number of iterations to use for NMF}
+
+\item{k}{Number of clusters to use for NMF. This can be specified as a
+\itemize{
+\item single number, or
+\item consecutive range.
+If unspecified, k is picked from 1 to min(num_cols - 1, num_rows - 1)
+}}
+
+\item{k_picker}{Method for picking k. If unspecified, k values are compared
+using the KL-index of Ward clusterings based on euclidean distance.
+Possible values:
+\itemize{
+\item max_cophenetic
+\item kneedle_silhouette_consensus
+\item kneedle_cophenetic
+\item max_silhouette_consensus
+\item max_cophenetic
+\item max_ward_kl
+To learn more, use help() for each of these functions.
+}}
+
+\item{seed}{Seed to use for NMF.}
+
+\item{p_val_threshold}{Threshold for significant p-values in PLSR.}
+
+\item{out_folder}{Folder used for outputting results.}
+
+\item{verbose}{Whether to print output (default TRUE).}
 }
 \description{
 This function performs calculations to generate a 3D network.
-It is not meant to be called directly. You should use gen3DNet
-instead. See help(gen3DNet) for further documentation.
+It is not meant to be called directly. You should use the gen3DNet
+function, which sanitizes arguments and reads in data from file paths.
+See help(gen3DNet) for further documentation.
+}
+\examples{
+
+library("gen3DNet")
+histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
+phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
+result <- gen3DNet(
+   histon_path,
+   phospho_path,
+   nmf_nrun = 10,
+   p_val_threshold = 0.01, 
+   # k_picker = max_cophenetic
+   # k_picker = kneedle_silhouette_consensus
+   # k_picker = kneedle_cophenetic 
+   # k_picker = max_silhouette_consensus
+   # k_picker = max_cophenetic
+   # k_picker = max_ward_kl
+   k_picker = max_ward_kl
+)
+
 }

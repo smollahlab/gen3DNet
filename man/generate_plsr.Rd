@@ -7,11 +7,11 @@
 generate_plsr(left, right, p_val_threshold = 1e-04, verbose = FALSE)
 }
 \arguments{
-\item{left}{}
+\item{left}{Matrix of left objects}
 
-\item{right}{}
+\item{right}{Matrix of right objects}
 
-\item{p_val_threshold}{}
+\item{p_val_threshold}{Threshold for significant p-values in PLSR.}
 
 \item{verbose}{Whether to print output.}
 }

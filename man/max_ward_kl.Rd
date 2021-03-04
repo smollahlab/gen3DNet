@@ -11,6 +11,17 @@ max_ward_kl(data, k_range)
 
 \item{k_range}{The range of possible k values}
 }
+\value{
+The chosen value of k.
+}
 \description{
-This function uses the NbClust package to
+This function uses the NbClust package (Charrad 2014)
+to estimate the number of clusters present.
+}
+\details{
+First, the data is repeatedly clustered with 1 cluster, then
+2, and so on, using the Ward hierarchical clustering algorithm
+(Ward 1963). Afterwards, each set of clusters is scored
+using the Krzanowski-Lai index (Krzanowski 1988). The
+number of clusters with the highest index is then chosen.
 }

@@ -102,9 +102,9 @@ pls.cv<-function (X, y, k = 10, groups=NULL, m = ncol(X), use.kernel = FALSE,
 #' The maximum number of components for PLSR is the number of columns in the right 
 #' matrix or the number of rows minus one, whichever is less.
 #' 
-#' @param left 
-#' @param right 
-#' @param p_val_threshold 
+#' @param left Matrix of left objects
+#' @param right Matrix of right objects
+#' @param p_val_threshold Threshold for significant p-values in PLSR.
 #' @param verbose Whether to print output.
 #'
 #' @return A list containing the following named values:
@@ -176,7 +176,7 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
         lines(-2:2,-2:2,lwd=3)
         # add naive estimate
         #plot(yCent,mypls1$Yhat[,index],xlab="measured",ylab="predicted(Yhat)", ylim=c(-2,2), xlim=c(-2,2),main=names(left)[i])
-        plot(yCent,mypls1$Yhat[,index],xlab="measured",ylab="predicted(Yhat)", ylim=c(-2,2), xlim=c(-2,2),main=names(left)[i])
+        plot(yCent,mypls1$Yhat[,index],xlab="measured",ylab="predicted(Yhat)", xlim=c(min(yCent),max(yCent)), ylim=c(min(mypls1$Yhat[,index]),max(mypls1$Yhat[,index])),main=names(left)[i])
         lines(-2:2,-2:2,lwd=3)
 
         for (k in 1:right_num) {

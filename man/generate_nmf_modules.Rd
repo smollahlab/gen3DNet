@@ -4,8 +4,14 @@
 \alias{generate_nmf_modules}
 \title{Generate NMF Modules}
 \usage{
-generate_nmf_modules(left_data, nmf_nrun, k_range,
-  k_picker = max_kl_ward, seed, verbose = FALSE)
+generate_nmf_modules(
+  left_data,
+  nmf_nrun,
+  k_range,
+  k_picker = gen3DNet::max_kl_ward,
+  seed,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{left_data}{This is the data that will be clustered using NMF. Signatures will be generated for the object type that is represented by rows.}
@@ -17,6 +23,8 @@ generate_nmf_modules(left_data, nmf_nrun, k_range,
 \item{k_picker}{Any function that takes a dataframe and a consecutive range of potential k values}
 
 \item{seed}{The seed to use with NMF}
+
+\item{verbose}{Whether to print output.}
 }
 \description{
 This function uses NMF to generate functional modules representing interactions

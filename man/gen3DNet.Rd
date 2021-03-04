@@ -4,9 +4,17 @@
 \alias{gen3DNet}
 \title{Create a 3D network model.}
 \usage{
-gen3DNet(left, right, nmf_nrun = 10, k = NULL,
-  k_picker = max_ward_kl, seed = 123456, p_val_threshold = 1e-04,
-  out_folder = NULL, verbose = TRUE)
+gen3DNet(
+  left,
+  right,
+  nmf_nrun = 10,
+  k = NULL,
+  k_picker = max_ward_kl,
+  seed = 123456,
+  p_val_threshold = 1e-04,
+  out_folder = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{left}{Matrix of left objects}
@@ -23,7 +31,18 @@ If unspecified, k is picked from 1 to min(num_cols - 1, num_rows - 1)
 }}
 
 \item{k_picker}{Method for picking k. If unspecified, k values are compared
-using the KL-index of Ward clusterings based on euclidean distance.}
+using the KL-index of Ward clusterings based on euclidean distance.
+Possible values:
+\itemize{
+\item max_cophenetic
+\item kneedle_silhouette_consensus
+\item kneedle_cophenetic
+\item max_silhouette_consensus
+\item max_cophenetic
+\item max_ward_kl
+}
+
+To learn more, use help() for each of these functions.}
 
 \item{seed}{Seed to use for NMF.}
 
@@ -60,4 +79,24 @@ These are found using PLSR. The connection strength is the absolute
 value of the PLSR regression coefficient. See the function
 generate_plsr for more information.
 }
+}
+\examples{
+
+library("gen3DNet")
+histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
+phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
+result <- gen3DNet(
+   histon_path,
+   phospho_path,
+   nmf_nrun = 10,
+   p_val_threshold = 0.01, 
+   # k_picker = max_cophenetic
+   # k_picker = kneedle_silhouette_consensus
+   # k_picker = kneedle_cophenetic 
+   # k_picker = max_silhouette_consensus
+   # k_picker = max_cophenetic
+   # k_picker = max_ward_kl
+   k_picker = max_ward_kl
+)
+
 }
