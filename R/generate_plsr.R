@@ -131,9 +131,9 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
 
     left_names <- list()
     right_names <- list()
-    abs_coefs <- list()
+    left_right_coefs <- list()
     pvals <- list()
-    directions <- list()
+    left_right_directions <- list()
     significant <- list()
     p <- list()
     non_p <- list()
@@ -202,10 +202,10 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
 
             left_name <- names(left)[i]
             right_name <- names(right)[k]
-            abs_coefs <- (abs(mypls3$coefficients[k]))
+            left_right_coefs <- (abs(mypls3$coefficients[k]))
             all_left_names = append(all_left_names, left_name)
             all_right_names = append(all_right_names, right_name)
-            all_abs_coefs = append(all_abs_coefs, abs_coefs)
+            all_abs_coefs = append(all_abs_coefs, left_right_coefs)
             all_pvals = append(all_pvals, pval)
             all_directions = append(all_directions, direction)
             all_significant = append(all_significant, significant)
@@ -217,9 +217,9 @@ generate_plsr <- function(left, right, p_val_threshold=.0001, verbose=FALSE) {
     out <- data.frame(
         left_names = all_left_names,
         right_names = all_right_names,
-        abs_coefs = all_abs_coefs,
+        left_right_coefs = all_abs_coefs,
         pvals = all_pvals,
-        directions = all_directions,
+        left_right_directions = all_directions,
         significant = all_significant
     )
 

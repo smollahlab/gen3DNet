@@ -303,10 +303,49 @@ create_gen3DNet <- function(
 
     # Merge loading coefficients and basis coefficients by clusters
     merged_left_common <- merge(common_cluster, left_cluster, by="cluster")
+    
+    # Create column storing the direction ("pos" or "neg") 
+    # of left and common correlation based on values in left matrix 
+    left_common_directions <- data.frame()
+    for (i in 1:nrow(merged_left_common)) {
+      cname = merged_left_common$common_names[i]
+      lname = merged_left_common$left_names[i]
+      if (left[cname,lname] < 0){
+        direction = "neg"
+      } 
+      else {
+        direction = "pos" 
+      } 
+      left_common_directions = append(left_common_directions, direction)
+    }
+    
+    #Add left_common direction to results dataframe 
+    merged_left_common$left_common_directions <- left_common_directions
+    merged_left_common <- apply(merged_left_common,2,as.character)
 
     # Merge left and common with p_list ("right")
     merged_left_common_right <- merge(merged_left_common, p_list, by="left_names")
 
+  # Create column storing the direction ("pos" or "neg") 
+    # of right and common correlation based on values in right matrix 
+    right_common_directions <- data.frame()
+    for (i in 1:nrow(merged_left_common_right)) {
+      cname = merged_left_common_right$common_names[i]
+      rname = merged_left_common_right$right_names[i]
+      if (right[cname,rname] < 0){
+        direction = "neg"
+      } 
+      else {
+        direction = "pos" 
+      } 
+      right_common_directions = append(right_common_directions, direction)
+    }
+
+    #Add right_common direction to results dataframe 
+    merged_left_common_right$right_common_directions <- right_common_directions
+    merged_left_common_right <- apply(merged_left_common_right,2,as.character)
+    merged_left_common_right <- as.data.frame(merged_left_common_right)
+    
     # 5. Return 3D Network
     list(
         plsr=plsr_result,
@@ -433,25 +472,10 @@ MIN_SIZE = 5
 #' 
 #' @examples
 #' 
-#' library("gen3DNet")
-#' histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
-#' phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
-#' result <- gen3DNet(
-#'    histon_path,
-#'    phospho_path,
-#'    nmf_nrun = 10,
-#'    p_val_threshold = 0.01, 
-#     # Use one of the following k_selection functions 
-#'    # k_picker = max_cophenetic
-#'    # k_picker = kneedle_silhouette_consensus
-#'    # k_picker = kneedle_cophenetic 
-#'    # k_picker = max_silhouette_consensus
-#'    # k_picker = max_cophenetic
-#'    # k_picker = max_ward_kl
-#'    k_picker = max_ward_kl
-#' )
 #'
 #' @export
+#' 
+
 gen3DNet <- function(
     left,
     right,

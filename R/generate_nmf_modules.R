@@ -77,7 +77,7 @@ generate_nmf_modules <- function(left_data, nmf_nrun, k_range, k_picker=gen3DNet
     left_data <- t(left_data)
 
     mat_hist <- normalize_nmf(left_data)
-
+    
     if (verbose) {
         if (length(k_range) != 1) {
             cli::cli_alert_info(paste(" Picking k from [", min(k_range), ",", max(k_range), "]."))
