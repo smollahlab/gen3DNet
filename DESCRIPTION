@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: c(
     person("Shamim", "Mollah", role = c("aut", "cre"), email = "smollah@wustl.edu", comment = c(ORCID = "0000-0001-9178-8339")),
     person("Charles", "Lu", role = "aut", email = "lucharles@wustl.edu", comment = c(ORCID = "0000-0003-3450-1682")),
-    person("Paul", "Morrison", role = "aut", email = "first.last@example.com"),
+    person("Paul", "Morrison", role = "aut", email = "morrisonp@fontbonne.edu"),
     person("Tina", "Tang", role = "aut", email = "tang.tina@wustl.edu", comment = c(ORCID = "0009-0002-0820-4545")))
 Description: Generates 3D network from two correlated objects with shared common factors. 
     Specifically, 'gen3DNet' builds the relationships between samples and shared factors using the 
