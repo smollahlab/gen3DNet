@@ -19,7 +19,8 @@ Imports:
     NbClust,
     cli,
     progress
-License: MIT + file LICENSE
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
