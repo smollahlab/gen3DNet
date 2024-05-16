@@ -5,8 +5,8 @@ Authors@R: c(
     person("Paul", "Morrison", role = "aut", email = "MorrisonP@Fontbonne.edu>"),
     person("Tina", "Tang", role = "aut", email = "tang.tina@wustl.edu", comment = c(ORCID = "0009-0002-0820-4545")),
     person("Charles", "Lu", role = "aut", email = "lucharles@wustl.edu", comment = c(ORCID = "0000-0003-3450-1682")),
-    person("Shamim", "Mollah", role = c("aut", "cre"), email = "smollah@wustl.edu", comment = c(ORCID = "0000-0001-9178-8339")))
-Author: Paul Morrison
+    person("Shamim", "Mollah", role = c("aut", "cre"), email = "samollah1@gmail.com>", comment = c(ORCID = "0000-0001-9178-8339")))
+Author: Paul Morrison, Tina Tang, Charles Lu, Shamim Mollah
 Maintainer: Shamim Mollah <samollah1@gmail.com>
 Description: Generates 3D network from two correlated objects with shared common factors. 
     Specifically, 'gen3DNet' builds the relationships between samples and shared factors using the 
