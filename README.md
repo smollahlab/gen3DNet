@@ -24,11 +24,11 @@ If you have any problems running our code, please feel free to contact us (smoll
 ### Example of usage
 ```
 library("gen3DNet")
-histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
-phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
+left <- system.file("extdata", "histon_data.csv", package="gen3DNet")
+right <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
 result <- gen3DNet(
-   histon_path,
-   phospho_path,
+   left,
+   right,
    nmf_nrun = 10,
    p_val_threshold = 0.01, 
    # k_picker = max_cophenetic
