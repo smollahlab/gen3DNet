@@ -7,7 +7,7 @@ We introduce an R package, gen3DNet (a generic version of the iPhDNet [1]), for 
 ## How to use
 You can install gen3DNet R package from CRAN using: 
 
-`install.packages(c('generate_nmf_modules', 'generate_plsr', 'gen3DNet'))`
+`install.packages('gen3DNet')`
 
 ### Installation of other dependencies
 * Install NMF (>= 0.23.0) using `install.packages('NMF')`
