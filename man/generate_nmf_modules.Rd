@@ -8,7 +8,7 @@ generate_nmf_modules(
   left_data,
   nmf_nrun,
   k_range,
-  k_picker = gen3DNet::max_kl_ward,
+  k_picker = gen3DNet::max_ward_kl,
   seed,
   verbose = FALSE
 )
