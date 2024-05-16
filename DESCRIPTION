@@ -2,10 +2,10 @@ Package: gen3DNet
 Title: An R Package for Generating 3D Network Models
 Version: 1.0.0.0
 Authors@R: c(
-    person("Shamim", "Mollah", role = c("aut", "cre"), email = "smollah@wustl.edu", comment = c(ORCID = "0000-0001-9178-8339")),
-    person("Charles", "Lu", role = "aut", email = "lucharles@wustl.edu", comment = c(ORCID = "0000-0003-3450-1682")),
     person("Paul", "Morrison", role = "aut", email = "MorrisonP@Fontbonne.edu>"),
-    person("Tina", "Tang", role = "aut", email = "tang.tina@wustl.edu", comment = c(ORCID = "0009-0002-0820-4545")))
+    person("Tina", "Tang", role = "aut", email = "tang.tina@wustl.edu", comment = c(ORCID = "0009-0002-0820-4545")),
+    person("Charles", "Lu", role = "aut", email = "lucharles@wustl.edu", comment = c(ORCID = "0000-0003-3450-1682")),
+    person("Shamim", "Mollah", role = c("aut", "cre"), email = "smollah@wustl.edu", comment = c(ORCID = "0000-0001-9178-8339")))
 Author: Paul Morrison
 Maintainer: Shamim Mollah <samollah1@gmail.com>
 Description: Generates 3D network from two correlated objects with shared common factors. 
