@@ -20,7 +20,7 @@ Imports:
     cli,
     progress
 Depends: R (>= 3.1.0), NMF
-License: MIT + file LICENSE
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
