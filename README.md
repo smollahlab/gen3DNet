@@ -6,13 +6,40 @@ Networks are ubiquitous to organize and represent data in the real world such as
 We introduce an R package, gen3DNet (a generic version of the iPhDNet [1]), for generating 3D network models from two correlated objects with shared common factors. Specifically, gen3DNet builds the relationships between samples and shared factors using the non-negative matrix factorization, where three clustering techniques are evaluated to determine the number of functional modules. In addition, it builds the relationships between samples from the two distinct data objects based on a partial least squares regression model. Usage of the package is illustrated through a real-world application (see gen3DNet paper below). 
 ## How to use
 You can install gen3DNet R package from CRAN using: 
+```
+install.packages('gen3DNet')
+```
 
-`install.packages('gen3DNet')`
+Or directly from Github using:
+```
+install.packages("remotes")
+remotes::install_github("MollahLab/gen3DNet")
+```
 
 ### Installation of other dependencies
 * Install NMF (>= 0.23.0) using `install.packages('NMF')`
 
 If you have any problems running our code, please feel free to contact us (smollah@wustl.edu)
+
+### Example of usage
+```
+library("gen3DNet")
+histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
+phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
+result <- gen3DNet(
+   histon_path,
+   phospho_path,
+   nmf_nrun = 10,
+   p_val_threshold = 0.01, 
+   # k_picker = max_cophenetic
+   # k_picker = kneedle_silhouette_consensus
+   # k_picker = kneedle_cophenetic 
+   # k_picker = max_silhouette_consensus
+   # k_picker = max_cophenetic
+   # k_picker = max_ward_kl
+   k_picker = max_ward_kl
+)
+```
 ## Citation
 Please cite the following paper if you are using gen3DNet for your research:
 
