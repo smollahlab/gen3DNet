@@ -70,7 +70,7 @@ normalize_nmf <- function(left_data) {
 #' @param k_picker Any function that takes a dataframe and a consecutive range of potential k values
 #' @param seed The seed to use with NMF
 #' @param verbose Whether to print output.
-generate_nmf_modules <- function(left_data, nmf_nrun, k_range, k_picker=gen3DNet::max_kl_ward, seed, verbose=FALSE) {
+generate_nmf_modules <- function(left_data, nmf_nrun, k_range, k_picker=gen3DNet::max_ward_kl, seed, verbose=FALSE) {
 
     cli::cli_alert_success("Running NMF")
 
