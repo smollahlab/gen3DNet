@@ -6,8 +6,8 @@ Authors@R: c(
     person("Charles", "Lu", role = "aut", email = "lucharles@wustl.edu", comment = c(ORCID = "0000-0003-3450-1682")),
     person("Paul", "Morrison", role = "aut", email = "MorrisonP@Fontbonne.edu>"),
     person("Tina", "Tang", role = "aut", email = "tang.tina@wustl.edu", comment = c(ORCID = "0009-0002-0820-4545")))
-Author: Tina Tang
-Maintainer: Tina Tang <tang.tina@wustl.edu>
+Author: Shamim Mollah
+Maintainer: Shamim Mollah <samollah1@gmail.com>
 Description: Generates 3D network from two correlated objects with shared common factors. 
     Specifically, 'gen3DNet' builds the relationships between samples and shared factors using the 
     non-negative matrix factorization, where three clustering techniques are evaluated to determine 
