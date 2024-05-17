@@ -472,6 +472,23 @@ MIN_SIZE = 5
 #' 
 #' @examples
 #' 
+#' library("gen3DNet")
+#' histon_path <- system.file("extdata", "histon_data.csv", package="gen3DNet")
+#' phospho_path <- system.file("extdata", "phospho_data.csv", package="gen3DNet")
+#' result <- gen3DNet(
+#'    histon_path,
+#'    phospho_path,
+#'    nmf_nrun = 10,
+#'    p_val_threshold = 0.01, 
+#     # Use one of the following k_selection functions 
+#'    # k_picker = max_cophenetic
+#'    # k_picker = kneedle_silhouette_consensus
+#'    # k_picker = kneedle_cophenetic 
+#'    # k_picker = max_silhouette_consensus
+#'    # k_picker = max_cophenetic
+#'    # k_picker = max_ward_kl
+#'    k_picker = max_ward_kl
+#' )
 #'
 #' @export
 #' 
