@@ -515,8 +515,9 @@ gen3DNet <- function(
         stop("Please ensure that each provided dataframe has at least 3 rows and columns.")
     }
     if (is.null(out_folder)) {
+        a = tempdir()
         out_folder <- paste(
-            "gen3DNet", chartr(old=" ", new="_", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S"))),
+            a, "gen3DNet", chartr(old=" ", new="_", chartr(old=":",new="-",strptime(Sys.time(),"%Y-%m-%d %H:%M:%S"))),
             sep="_"
         )
     }
@@ -538,7 +539,7 @@ gen3DNet <- function(
     write_all_to_disk(
         out_folder,
         result,
-        "."
+        ""
     )
     #Return same output data
     result
