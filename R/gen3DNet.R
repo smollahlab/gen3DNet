@@ -391,14 +391,14 @@ create_gen3DNet <- function(
 #' @export
 write_all_to_disk <- function(name, object, folder) {
     if (class(object) == "data.frame") {
-        final_path = file.path(folder, paste(name,".csv",sep=""))
+        final_path = file.path(folder, paste(name,".csv",sep=""), fsep = .Platform$file.sep)
         write.csv(
             object,
             final_path
         )
     }
     else if (class(object) == "list") {
-        new_path <- file.path(folder, name)
+        new_path <- file.path(folder, name, fsep = .Platform$file.sep)
         dir.create(new_path, showWarnings=FALSE)
         lapply(
             1:length(object),
