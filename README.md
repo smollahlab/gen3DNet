@@ -41,9 +41,9 @@ result <- gen3DNet(
 )
 ```
 ## Citation
-Please cite the following paper if you are using gen3DNet for your research:
+Please cite the following papers if you are using gen3DNet for your research:
 
 1. S. A. Mollah and S. Subramaniam, “Histone Signatures Predict Therapeutic Efficacy in Breast Cancer”. 2020, IEEE Open Journal of Engineering in Medicine and Biology, vol. 1, pp. 74-82.  (doi.org/10.1109/OJEMB.2020.2967105)
 
-2. gen3DNet: An R Package for Generating 3D Network Models. Paul Morrison, Tina Tang, Charles Lu, Shamim Mollah bioRxiv 
+2. Paul Morrison, Tina Tang, Charles Lu, Shamim Mollah. " gen3DNet: An R Package for Generating 3D Network Models". https://doi.org/10.1101/2024.11.11.623060 bioRxiv 
 
