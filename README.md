@@ -19,7 +19,7 @@ remotes::install_github("MollahLab/gen3DNet")
 ### Installation of other dependencies
 * Install NMF (>= 0.23.0) using `install.packages('NMF')`
 
-If you have any problems running our code, please feel free to contact us (smollah@wustl.edu)
+If you have any problems running our code, please feel free to contact us (samollah1@gmail.com)
 
 ### Example of usage
 ```
